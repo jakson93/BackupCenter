@@ -122,7 +122,7 @@ function scanEquipment(equipment) {
 
   // Register new files as backups.
   for (const f of files) {
-    const relPath = `${equipment.ftp_folder}/${f.name}`;
+    const relPath = path.isAbsolute(folder) ? f.absPath : `${folder}/${f.name}`;
     const receivedAt = new Date(f.mtimeMs).toISOString();
     const r = insertBackupIfMissing({
       equipment_id: equipment.id,

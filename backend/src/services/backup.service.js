@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const mime = require('mime-types');
 const { db } = require('../database');
 const { config } = require('../config');
+const { getRuntimeConfig } = require('./runtimeConfig.service');
 const { safeJoinUnderRoot, normalizeRelPath } = require('../utils/fileUtils');
 const { addActivity } = require('./activity.service');
 
@@ -102,7 +103,8 @@ function deleteBackup(id) {
   }
 
   const rel = normalizeRelPath(row.file_path);
-  const abs = safeJoinUnderRoot(config.FTP_BACKUP_ROOT, rel);
+  const rt = getRuntimeConfig();
+  const abs = path.isAbsolute(row.file_path) ? row.file_path : safeJoinUnderRoot(rt.FTP_BACKUP_ROOT, rel);
   try {
     if (fs.existsSync(abs)) fs.removeSync(abs);
   } catch (e) {
@@ -131,7 +133,8 @@ function streamBackupDownload(res, id) {
   }
 
   const rel = normalizeRelPath(row.file_path);
-  const abs = safeJoinUnderRoot(config.FTP_BACKUP_ROOT, rel);
+  const rt = getRuntimeConfig();
+  const abs = path.isAbsolute(row.file_path) ? row.file_path : safeJoinUnderRoot(rt.FTP_BACKUP_ROOT, rel);
   if (!fs.existsSync(abs)) {
     const err = new Error('file not found on disk');
     err.status = 404;
