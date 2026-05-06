@@ -7,7 +7,7 @@ const { slugifyFolderName } = require('../utils/fileUtils');
 const { addActivity } = require('./activity.service');
 
 function assertSafeFolderName(folder) {
-  const f = String(folder ?? '').trim().toLowerCase();
+  const f = String(folder ?? '').trim();
   if (!f) {
     const err = new Error('ftp_folder is required');
     err.status = 400;
@@ -19,7 +19,7 @@ function assertSafeFolderName(folder) {
     err.status = 400;
     throw err;
   }
-  if (!/^[a-z0-9][a-z0-9-_/]*$/.test(f) && !f.startsWith('/')) {
+  if (!/^[a-zA-Z0-9][a-zA-Z0-9-_/]*$/.test(f) && !f.startsWith('/')) {
     const err = new Error('ftp_folder contains invalid characters');
     err.status = 400;
     throw err;
