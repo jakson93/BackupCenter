@@ -13,13 +13,13 @@ function assertSafeFolderName(folder) {
     err.status = 400;
     throw err;
   }
-  // Restrict to a single folder segment to avoid path traversal.
-  if (f.includes('/') || f.includes('\\') || f.includes('..')) {
-    const err = new Error('ftp_folder must be a single relative folder name');
+  // Prevent path traversal outside the system root.
+  if (f.includes('..')) {
+    const err = new Error('ftp_folder cannot contain ".."');
     err.status = 400;
     throw err;
   }
-  if (!/^[a-z0-9][a-z0-9-_]*$/.test(f)) {
+  if (!/^[a-z0-9][a-z0-9-_/]*$/.test(f) && !f.startsWith('/')) {
     const err = new Error('ftp_folder contains invalid characters');
     err.status = 400;
     throw err;
@@ -94,7 +94,8 @@ function createEquipment(input) {
   const equipment = getEquipmentById(info.lastInsertRowid);
 
   // Create folder for FTP drop.
-  const abs = path.join(config.FTP_BACKUP_ROOT, safeFolder);
+  const rt = getRuntimeConfig();
+  const abs = path.isAbsolute(safeFolder) ? safeFolder : path.join(rt.FTP_BACKUP_ROOT, safeFolder);
   try {
     fs.ensureDirSync(abs);
     addActivity({

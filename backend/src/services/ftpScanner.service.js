@@ -35,11 +35,14 @@ function ensureEquipmentAlerts({ equipment, folderExists, latestBackup, status }
   const equipmentId = equipment.id;
 
   if (!folderExists) {
+    const rt = getRuntimeConfig();
+    const folder = equipment.ftp_folder || '';
+    const absPath = path.isAbsolute(folder) ? folder : path.join(rt.FTP_BACKUP_ROOT, folder);
     openAlertIfMissing({
       equipment_id: equipmentId,
       type: 'folder_missing',
       severity: 'critical',
-      message: `Pasta nao encontrada: ${path.join(getRuntimeConfig().FTP_BACKUP_ROOT, equipment.ftp_folder)}`,
+      message: `Pasta nao encontrada: ${absPath}`,
     });
   } else {
     resolveAlertsByType({ equipment_id: equipmentId, type: 'folder_missing' });
@@ -83,7 +86,8 @@ function ensureEquipmentAlerts({ equipment, folderExists, latestBackup, status }
 
 function scanEquipment(equipment) {
   const rt = getRuntimeConfig();
-  const absFolder = path.join(rt.FTP_BACKUP_ROOT, equipment.ftp_folder);
+  const folder = equipment.ftp_folder || '';
+  const absFolder = path.isAbsolute(folder) ? folder : path.join(rt.FTP_BACKUP_ROOT, folder);
 
   let folderExists = false;
   let files = [];

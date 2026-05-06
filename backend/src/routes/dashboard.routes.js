@@ -55,7 +55,9 @@ router.get('/', (req, res) => {
     const status = stats?.status ?? (e.enabled ? 'backup_missing' : 'disabled');
     const folderSize = stats?.folder_size_bytes ?? 0;
     const rt = getRuntimeConfig();
-    const folderExists = stats?.folder_exists ?? (fs.existsSync(path.join(rt.FTP_BACKUP_ROOT, e.ftp_folder)));
+    const folder = e.ftp_folder || '';
+    const absPath = path.isAbsolute(folder) ? folder : path.join(rt.FTP_BACKUP_ROOT, folder);
+    const folderExists = stats?.folder_exists ?? fs.existsSync(absPath);
 
     if (lastBackup?.received_at) {
       if (
