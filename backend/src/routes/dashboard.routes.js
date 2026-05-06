@@ -73,6 +73,7 @@ router.get('/', (req, res) => {
       name: e.name,
       ip_address: e.ip_address,
       ftp_folder: e.ftp_folder,
+      resolved_path: absPath,
       enabled: Boolean(e.enabled),
       expected_frequency_hours: e.expected_frequency_hours,
       last_backup: lastBackup,

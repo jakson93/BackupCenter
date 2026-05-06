@@ -18,11 +18,17 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
   const list = listEquipments();
+  const rt = getRuntimeConfig();
   res.json(
-    list.map((e) => ({
-      ...e,
-      stats: getSettingJson(`equipment:${e.id}:stats`, null),
-    }))
+    list.map((e) => {
+      const folder = e.ftp_folder || '';
+      const resolved = path.isAbsolute(folder) ? folder : path.join(rt.FTP_BACKUP_ROOT, folder);
+      return {
+        ...e,
+        resolved_path: resolved,
+        stats: getSettingJson(`equipment:${e.id}:stats`, null),
+      };
+    })
   );
 });
 

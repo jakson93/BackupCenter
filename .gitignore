@@ -3,7 +3,11 @@ dist/
 .env
 *.sqlite
 *.sqlite-journal
+*.sqlite-shm
+*.sqlite-wal
 data/backup-center.sqlite
+data/backup-center.sqlite-shm
+data/backup-center.sqlite-wal
 data/logs/
 .DS_Store
 .vscode/

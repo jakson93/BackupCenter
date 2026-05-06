@@ -161,7 +161,7 @@ export default function Equipments() {
                     <td className="px-4 py-3">
                       <StatusBadge status={stats?.status || 'backup_missing'} />
                     </td>
-                    <td className="px-4 py-3 text-[13px] text-bc-text2">/backups/{r.ftp_folder}/</td>
+                    <td className="px-4 py-3 text-[13px] text-bc-text2 font-mono">{r.resolved_path}</td>
                     <td className="px-4 py-3 text-[13px] font-semibold text-bc-text2">
                       {formatBytes(stats?.folder_size_bytes || 0)}
                     </td>
