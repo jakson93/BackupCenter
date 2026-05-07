@@ -118,9 +118,6 @@ export default function Dashboard() {
 
       <div className="space-y-4">
         <EquipmentTable rows={equipments} onAction={onEquipmentAction} />
-        <button className="self-start text-[13px] font-semibold text-bc-info hover:underline">
-          Ver todos os equipamentos ({data?.metrics?.activeBackups || 0})
-        </button>
         <AlertPanel alerts={data?.alerts || []} />
       </div>
 

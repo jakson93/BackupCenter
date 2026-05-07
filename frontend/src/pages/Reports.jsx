@@ -178,15 +178,15 @@ export default function Reports() {
         </div>
       </div>
 
-      <div className="rounded-card border border-bc-border bg-bc-card p-4 shadow-inner">
-        <div className="flex items-baseline justify-between gap-3">
+      <div className="flex flex-col rounded-card border border-bc-border bg-bc-card shadow-inner max-h-[420px]">
+        <div className="flex items-baseline justify-between gap-3 px-4 pt-4 shrink-0">
           <div>
             <div className="text-[14px] font-semibold text-bc-text2">Ultimo backup por equipamento</div>
             <div className="mt-1 text-[12px] text-bc-textWeak">Download rapido do ultimo arquivo detectado.</div>
           </div>
         </div>
 
-        <div className="mt-3 overflow-x-auto bc-scrollbar">
+        <div className="overflow-auto bc-scrollbar flex-1 px-4 pb-4">
           <table className="w-full min-w-[980px] border-separate border-spacing-0">
             <thead>
               <tr className="text-left text-[12px] font-semibold text-bc-textWeak">

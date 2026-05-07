@@ -127,8 +127,8 @@ export default function Backups() {
         </div>
       </div>
 
-      <div className="rounded-card border border-bc-border bg-bc-card shadow-inner">
-        <div className="overflow-x-auto bc-scrollbar">
+      <div className="flex flex-col rounded-card border border-bc-border bg-bc-card shadow-inner max-h-[420px]">
+        <div className="overflow-auto bc-scrollbar flex-1">
           <table className="w-full min-w-[980px] border-separate border-spacing-0">
             <thead>
               <tr className="text-left text-[12px] font-semibold text-bc-textWeak">

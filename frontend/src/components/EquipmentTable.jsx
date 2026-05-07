@@ -12,12 +12,12 @@ function relTime(iso) {
 
 export default function EquipmentTable({ rows, onAction }) {
   return (
-    <div className="rounded-card border border-bc-border bg-bc-card shadow-inner">
-      <div className="flex items-center justify-between border-b border-bc-border px-4 py-3">
+    <div className="flex flex-col rounded-card border border-bc-border bg-bc-card shadow-inner max-h-[420px]">
+      <div className="flex items-center justify-between border-b border-bc-border px-4 py-3 shrink-0">
         <div className="text-[14px] font-semibold text-bc-text2">Status dos Equipamentos e Backups</div>
       </div>
 
-      <div className="overflow-x-auto bc-scrollbar">
+      <div className="overflow-auto bc-scrollbar flex-1">
         <table className="w-full border-separate border-spacing-0">
           <thead>
             <tr className="text-left text-[12px] font-semibold text-bc-textWeak">
