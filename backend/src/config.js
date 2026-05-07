@@ -32,7 +32,7 @@ const defaultDbDir = (() => {
 const config = {
   APP_PORT: envInt('APP_PORT', 8080),
   API_PORT: envInt('API_PORT', 3001),
-  FTP_BACKUP_ROOT: envStr('FTP_BACKUP_ROOT', '/srv/ftp/backups'),
+  FTP_BACKUP_ROOT: envStr('FTP_BACKUP_ROOT', '/home/ftpmov/BKEQUIPAMENTOS'),
   DATABASE_PATH: envStr('DATABASE_PATH', path.join(defaultDbDir, 'backup-center.sqlite')),
   SCAN_INTERVAL_SECONDS: envInt('SCAN_INTERVAL_SECONDS', 60),
   SERVER_NAME: envStr('SERVER_NAME', 'Ubuntu FTP Server'),

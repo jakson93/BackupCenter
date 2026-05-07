@@ -89,6 +89,32 @@ function initDatabase() {
   return db;
 }
 
+function normalizePaths() {
+  const OLD_PREFIXES = [
+    'home/ftpmov/BKEQUIPAMENTOS/',
+    '/home/ftpmov/BKEQUIPAMENTOS/',
+    'home/ftpmov/BKEQUIPAMENTOS',
+    '/home/ftpmov/BKEQUIPAMENTOS',
+  ];
+
+  const equipments = db.prepare('SELECT id, ftp_folder FROM equipments').all();
+  for (const eq of equipments) {
+    let newFolder = eq.ftp_folder;
+    for (const prefix of OLD_PREFIXES) {
+      if (newFolder.startsWith(prefix)) {
+        newFolder = newFolder.slice(prefix.length);
+        break;
+      }
+    }
+    if (newFolder !== eq.ftp_folder) {
+      db.prepare('UPDATE equipments SET ftp_folder = ? WHERE id = ?').run(newFolder, eq.id);
+      db.prepare("UPDATE backups SET file_path = REPLACE(file_path, ?, ?) WHERE equipment_id = ? AND file_path LIKE ?")
+        .run(eq.ftp_folder + '/', newFolder + '/', eq.id, eq.ftp_folder + '/%');
+    }
+  }
+}
+
 const db = initDatabase();
+normalizePaths();
 
 module.exports = { db };
