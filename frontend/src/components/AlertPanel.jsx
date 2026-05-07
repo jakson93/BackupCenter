@@ -8,7 +8,7 @@ function severityTone(severity) {
 
 export default function AlertPanel({ alerts }) {
   return (
-    <div className="flex flex-col h-full rounded-card border border-bc-border bg-bc-card shadow-inner">
+    <div className="flex flex-col rounded-card border border-bc-border bg-bc-card shadow-inner max-h-[420px]">
       <div className="flex items-center justify-between border-b border-bc-border px-4 py-3">
         <div className="text-[14px] font-semibold text-bc-text2">Alertas</div>
         <button className="text-[12px] font-semibold text-bc-info hover:underline">Ver todos</button>
