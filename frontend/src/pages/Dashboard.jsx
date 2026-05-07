@@ -4,7 +4,6 @@ import { Database, CalendarCheck2, AlertTriangle, PieChart } from 'lucide-react'
 import MetricCard from '../components/MetricCard.jsx'
 import EquipmentTable from '../components/EquipmentTable.jsx'
 import AlertPanel from '../components/AlertPanel.jsx'
-import FtpFolderTree from '../components/FtpFolderTree.jsx'
 
 import { api } from '../services/api.js'
 import { formatBytes, formatNumber, formatRelativeTime } from '../utils/format.js'
@@ -126,12 +125,6 @@ export default function Dashboard() {
         </div>
         <AlertPanel alerts={data?.alerts || []} />
       </div>
-
-      <FtpFolderTree
-        rootLabel="/backups"
-        folders={data?.folders?.items || []}
-        storage={storage}
-      />
 
       {loading ? <div className="text-[13px] text-bc-text3">Carregando...</div> : null}
     </div>

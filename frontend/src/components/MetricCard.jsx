@@ -85,7 +85,7 @@ export default function MetricCard({ title, value, subtitle, icon: Icon, variant
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="text-[14px] font-semibold text-bc-text2">{title}</div>
-          <div className="mt-2 truncate text-[32px] font-extrabold leading-tight text-bc-text">{value}</div>
+          <div className="mt-2 text-[20px] sm:text-[24px] lg:text-[32px] font-extrabold leading-tight text-bc-text">{value}</div>
           {renderSubtitle()}
         </div>
         {renderSide()}

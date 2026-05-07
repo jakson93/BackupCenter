@@ -18,15 +18,15 @@ export default function EquipmentTable({ rows, onAction }) {
       </div>
 
       <div className="overflow-x-auto bc-scrollbar">
-        <table className="w-full min-w-[900px] border-separate border-spacing-0">
+        <table className="w-full border-separate border-spacing-0">
           <thead>
             <tr className="text-left text-[12px] font-semibold text-bc-textWeak">
               <th className="px-4 py-3">Equipamento</th>
-              <th className="px-4 py-3">IP</th>
+              <th className="hidden md:table-cell px-4 py-3">IP</th>
               <th className="px-4 py-3">Ultimo backup</th>
               <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3">Pasta FTP</th>
-              <th className="px-4 py-3">Tamanho</th>
+              <th className="hidden lg:table-cell px-4 py-3">Pasta FTP</th>
+              <th className="hidden md:table-cell px-4 py-3">Tamanho</th>
               <th className="px-4 py-3 text-right">Acoes</th>
             </tr>
           </thead>
@@ -40,7 +40,7 @@ export default function EquipmentTable({ rows, onAction }) {
                       <div className="text-[13px] font-semibold text-bc-text">{r.name}</div>
                       <div className="text-[12px] text-bc-textWeak">{r.hostname || r.vendor || ''}</div>
                     </td>
-                    <td className="px-4 py-3 text-[13px] text-bc-text2">{r.ip_address || '-'}</td>
+                    <td className="hidden md:table-cell px-4 py-3 text-[13px] text-bc-text2">{r.ip_address || '-'}</td>
                     <td className="px-4 py-3">
                       <div className="text-[13px] text-bc-text2">{relTime(last)}</div>
                       <div className="text-[12px] text-bc-textWeak">{last ? new Date(last).toLocaleString('pt-BR') : ''}</div>
@@ -48,8 +48,8 @@ export default function EquipmentTable({ rows, onAction }) {
                     <td className="px-4 py-3">
                       <StatusBadge status={r.status} />
                     </td>
-                    <td className="px-4 py-3 text-[13px] text-bc-text2 font-mono">{r.resolved_path}</td>
-                    <td className="px-4 py-3 text-[13px] font-semibold text-bc-text2">
+                    <td className="hidden lg:table-cell px-4 py-3 text-[13px] text-bc-text2 font-mono">{r.resolved_path}</td>
+                    <td className="hidden md:table-cell px-4 py-3 text-[13px] font-semibold text-bc-text2">
                       {formatBytes(r.folder_size_bytes)}
                     </td>
                     <td className="px-4 py-3">
