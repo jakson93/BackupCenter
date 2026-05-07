@@ -5,10 +5,9 @@ import MetricCard from '../components/MetricCard.jsx'
 import EquipmentTable from '../components/EquipmentTable.jsx'
 import AlertPanel from '../components/AlertPanel.jsx'
 import FtpFolderTree from '../components/FtpFolderTree.jsx'
-import BackupActivityChart from '../components/BackupActivityChart.jsx'
-import RecentActivities from '../components/RecentActivities.jsx'
+
 import { api } from '../services/api.js'
-import { formatBytes, formatNumber } from '../utils/format.js'
+import { formatBytes, formatNumber, formatRelativeTime } from '../utils/format.js'
 
 function lastBackupLabel(iso) {
   if (!iso) return null
@@ -91,14 +90,13 @@ export default function Dashboard() {
         <MetricCard
           title="Backups ativos"
           value={formatNumber(metrics?.activeBackups || 0)}
-          subtitle="+8 desde ontem"
           icon={Database}
           variant="blue"
         />
         <MetricCard
           title="Ultimo backup realizado"
-          value={metrics?.lastBackup?.receivedAt ? lastBackupLabel(metrics.lastBackup.receivedAt) : 'Sem dados'}
-          subtitle={metrics?.lastBackup?.equipment || ''}
+          value={metrics?.lastBackup?.receivedAt ? formatRelativeTime(metrics.lastBackup.receivedAt) : 'Sem dados'}
+          subtitle={metrics?.lastBackup?.equipment ? `${metrics.lastBackup.equipment} ${lastBackupLabel(metrics.lastBackup.receivedAt)}` : ''}
           icon={CalendarCheck2}
           variant="green"
         />
@@ -129,15 +127,11 @@ export default function Dashboard() {
         <AlertPanel alerts={data?.alerts || []} />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[1.5fr_1fr_360px]">
-        <BackupActivityChart data={data?.chart || []} />
-        <RecentActivities activities={data?.activities || []} />
-        <FtpFolderTree
-          rootLabel="/backups"
-          folders={data?.folders?.items || []}
-          storage={storage}
-        />
-      </div>
+      <FtpFolderTree
+        rootLabel="/backups"
+        folders={data?.folders?.items || []}
+        storage={storage}
+      />
 
       {loading ? <div className="text-[13px] text-bc-text3">Carregando...</div> : null}
     </div>
