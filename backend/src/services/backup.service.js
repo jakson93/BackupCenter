@@ -31,8 +31,15 @@ function insertBackupIfMissing({ equipment_id, file_name, file_path, file_size, 
 
   const rt = getRuntimeConfig();
   const lowerName = file_name.toLowerCase();
+  
+  // Check if file has an extension
+  const hasExtension = lowerName.includes('.');
   const isValidExtension = rt.BACKUP_EXTENSIONS.some((ext) => lowerName.endsWith(ext.toLowerCase()));
-  const status = (file_size === 0 || !isValidExtension) ? 'invalid' : 'valid';
+  
+  // Rule: Must have size > 0. 
+  // If it has an extension, it must be in the list.
+  // If it has NO extension, we allow it (common in some equipment backups).
+  const status = (file_size > 0 && (!hasExtension || isValidExtension)) ? 'valid' : 'invalid';
 
   if (existing) {
     // If a file was still uploading (0 B) or changed, refresh its metadata.

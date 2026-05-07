@@ -48,7 +48,7 @@ const config = {
   // Common backup extensions
   BACKUP_EXTENSIONS: envStr(
     'BACKUP_EXTENSIONS',
-    '.zip,.tar,.gz,.7z,.rar,.bz2,.xz,.cfg,.conf,.txt,.bak,.sql,.backup'
+    '.zip,.tar,.gz,.7z,.rar,.bz2,.xz,.cfg,.conf,.txt,.bak,.sql,.backup,.bin,.dat,.sh,.img,.cfg.gz'
   ).split(','),
 };
 

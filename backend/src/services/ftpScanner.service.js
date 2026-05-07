@@ -134,7 +134,9 @@ function scanEquipment(equipment) {
     if (r.inserted) {
       const rt = getRuntimeConfig();
       const lowerName = f.name.toLowerCase();
+      const hasExtension = lowerName.includes('.');
       const isValidExtension = rt.BACKUP_EXTENSIONS.some((ext) => lowerName.endsWith(ext.toLowerCase()));
+      const isValid = f.size > 0 && (!hasExtension || isValidExtension);
       
       let type = 'backup_received';
       let title = 'Backup concluido com sucesso';
@@ -142,9 +144,9 @@ function scanEquipment(equipment) {
       if (f.size === 0) {
         type = 'backup_failed';
         title = 'Falha: Arquivo vazio';
-      } else if (!isValidExtension) {
+      } else if (!isValid) {
         type = 'backup_failed';
-        title = 'Falha: Formato invalido';
+        title = 'Falha: Formato não permitido';
       }
 
       addActivity({
