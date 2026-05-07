@@ -92,7 +92,8 @@ router.post('/:id/recreate-folder', (req, res, next) => {
   try {
     const e = getEquipmentById(Number(req.params.id));
     if (!e) return res.status(404).json({ error: 'not found' });
-    const abs = path.join(getRuntimeConfig().FTP_BACKUP_ROOT, e.ftp_folder);
+    const folder = e.ftp_folder || '';
+    const abs = path.isAbsolute(folder) ? folder : path.join(getRuntimeConfig().FTP_BACKUP_ROOT, folder);
     fs.ensureDirSync(abs);
     addActivity({
       type: 'folder_created',
