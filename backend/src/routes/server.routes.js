@@ -64,7 +64,8 @@ router.post('/recreate-folders', (req, res) => {
   const created = [];
   const failed = [];
   for (const e of equipments) {
-    const abs = path.join(config.FTP_BACKUP_ROOT, e.ftp_folder);
+    const folder = e.ftp_folder || '';
+    const abs = path.isAbsolute(folder) ? folder : path.join(config.FTP_BACKUP_ROOT, folder);
     try {
       fs.ensureDirSync(abs);
       created.push({ equipment_id: e.id, abs_path: abs });
@@ -87,10 +88,11 @@ router.get('/folders', (req, res) => {
     root: config.FTP_BACKUP_ROOT,
     folders: equipments.map((e) => {
       const stats = getSettingJson(`equipment:${e.id}:stats`, null);
+      const folder = e.ftp_folder || '';
       return {
         equipment_id: e.id,
-        name: e.ftp_folder,
-        abs_path: path.join(config.FTP_BACKUP_ROOT, e.ftp_folder),
+        name: folder,
+        abs_path: path.isAbsolute(folder) ? folder : path.join(config.FTP_BACKUP_ROOT, folder),
         size_bytes: stats?.folder_size_bytes ?? 0,
         status: stats?.status ?? null,
         folder_exists: stats?.folder_exists ?? null,
