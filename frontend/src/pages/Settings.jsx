@@ -25,6 +25,7 @@ export default function Settings() {
     SERVER_NAME: '',
     SERVER_IP: '',
     FTP_BACKUP_ROOT: '',
+    BACKUP_EXTENSIONS: '',
   })
 
   const [pw, setPw] = useState({
@@ -50,6 +51,7 @@ export default function Settings() {
         SERVER_NAME: r.data.runtime.SERVER_NAME,
         SERVER_IP: r.data.runtime.SERVER_IP,
         FTP_BACKUP_ROOT: r.data.runtime.FTP_BACKUP_ROOT,
+        BACKUP_EXTENSIONS: (r.data.runtime.BACKUP_EXTENSIONS || []).join(','),
       })
       setPw((s) => ({ ...s, new_username: r.data.auth.username }))
 
@@ -91,6 +93,7 @@ export default function Settings() {
         SERVER_NAME: cfg.SERVER_NAME,
         SERVER_IP: cfg.SERVER_IP,
         FTP_BACKUP_ROOT: cfg.FTP_BACKUP_ROOT,
+        BACKUP_EXTENSIONS: cfg.BACKUP_EXTENSIONS,
       })
       setMsg('Configuracoes salvas.')
       await load()
@@ -237,6 +240,15 @@ export default function Settings() {
                 value={cfg.FTP_BACKUP_ROOT}
                 onChange={(e) => setCfg((s) => ({ ...s, FTP_BACKUP_ROOT: e.target.value }))}
                 placeholder="/srv/ftp/backups"
+                className="h-10 w-full rounded-input border border-bc-border bg-bc-bg2 px-3 text-[13px] text-bc-text"
+              />
+            </label>
+            <label className="md:col-span-2">
+              <div className="mb-1 text-[12px] font-semibold text-bc-textWeak">BACKUP_EXTENSIONS (Separadas por virgula)</div>
+              <input
+                value={cfg.BACKUP_EXTENSIONS}
+                onChange={(e) => setCfg((s) => ({ ...s, BACKUP_EXTENSIONS: e.target.value }))}
+                placeholder=".zip,.tar,.cfg,.txt"
                 className="h-10 w-full rounded-input border border-bc-border bg-bc-bg2 px-3 text-[13px] text-bc-text"
               />
             </label>

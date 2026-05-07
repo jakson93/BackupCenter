@@ -27,6 +27,7 @@ function getRuntimeConfig() {
     SERVER_NAME: getStrSetting('config:server_name', base.SERVER_NAME),
     SERVER_IP: getStrSetting('config:server_ip', base.SERVER_IP),
     FTP_BACKUP_ROOT: getStrSetting('config:ftp_backup_root', base.FTP_BACKUP_ROOT),
+    BACKUP_EXTENSIONS: getStrSetting('config:backup_extensions', base.BACKUP_EXTENSIONS.join(',')).split(','),
   };
 }
 
@@ -65,6 +66,12 @@ function updateRuntimeConfig(partial) {
   }
   if (partial.FTP_BACKUP_ROOT != null) {
     setSetting('config:ftp_backup_root', String(partial.FTP_BACKUP_ROOT));
+  }
+  if (partial.BACKUP_EXTENSIONS != null) {
+    const val = Array.isArray(partial.BACKUP_EXTENSIONS)
+      ? partial.BACKUP_EXTENSIONS.join(',')
+      : String(partial.BACKUP_EXTENSIONS);
+    setSetting('config:backup_extensions', val);
   }
 
   return getRuntimeConfig();

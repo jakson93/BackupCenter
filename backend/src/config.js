@@ -44,6 +44,12 @@ const config = {
   // Auth bootstrap (master user). If not set, fallback values are used.
   MASTER_USER: envStr('MASTER_USER', 'mov'),
   MASTER_PASSWORD: envStr('MASTER_PASSWORD', 'm0V@2ooK#2031'),
+
+  // Common backup extensions
+  BACKUP_EXTENSIONS: envStr(
+    'BACKUP_EXTENSIONS',
+    '.zip,.tar,.gz,.7z,.rar,.bz2,.xz,.cfg,.conf,.txt,.bak,.sql,.backup'
+  ).split(','),
 };
 
 module.exports = { config };

@@ -132,10 +132,25 @@ function scanEquipment(equipment) {
       received_at: receivedAt,
     });
     if (r.inserted) {
+      const rt = getRuntimeConfig();
+      const lowerName = f.name.toLowerCase();
+      const isValidExtension = rt.BACKUP_EXTENSIONS.some((ext) => lowerName.endsWith(ext.toLowerCase()));
+      
+      let type = 'backup_received';
+      let title = 'Backup concluido com sucesso';
+      
+      if (f.size === 0) {
+        type = 'backup_failed';
+        title = 'Falha: Arquivo vazio';
+      } else if (!isValidExtension) {
+        type = 'backup_failed';
+        title = 'Falha: Formato invalido';
+      }
+
       addActivity({
-        type: f.size === 0 ? 'backup_failed' : 'backup_received',
-        title: f.size === 0 ? 'Falha na coleta de backup' : 'Backup concluido com sucesso',
-        description: equipment.name,
+        type,
+        title,
+        description: `${equipment.name}: ${f.name}`,
         metadata: { equipment_id: equipment.id, backup_id: r.id, file_name: f.name, file_size: f.size },
       });
     }

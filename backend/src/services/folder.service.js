@@ -1,22 +1,30 @@
 const fs = require('fs-extra');
 const path = require('path');
 
-function listFilesSorted(absFolder) {
-  const entries = fs.readdirSync(absFolder, { withFileTypes: true });
-  const files = [];
-  for (const ent of entries) {
-    if (!ent.isFile()) continue;
-    const abs = path.join(absFolder, ent.name);
-    let st;
-    try {
-      st = fs.statSync(abs);
-    } catch {
-      continue;
+function listFilesSorted(absFolder, recursive = true) {
+  let files = [];
+  try {
+    const entries = fs.readdirSync(absFolder, { withFileTypes: true });
+    for (const ent of entries) {
+      const abs = path.join(absFolder, ent.name);
+      if (ent.isDirectory() && recursive) {
+        files = files.concat(listFilesSorted(abs, recursive));
+      } else if (ent.isFile()) {
+        let st;
+        try {
+          st = fs.statSync(abs);
+        } catch {
+          continue;
+        }
+        files.push({ name: ent.name, absPath: abs, size: st.size, mtimeMs: st.mtimeMs });
+      }
     }
-    files.push({ name: ent.name, absPath: abs, size: st.size, mtimeMs: st.mtimeMs });
+  } catch (e) {
+    // Ignore errors for specific folders (permissions, etc.)
   }
-  files.sort((a, b) => b.mtimeMs - a.mtimeMs);
-  return files;
+  
+  // Sort by modification time descending only at the top level call
+  return files.sort((a, b) => b.mtimeMs - a.mtimeMs);
 }
 
 function folderSizeBytes(absFolder) {

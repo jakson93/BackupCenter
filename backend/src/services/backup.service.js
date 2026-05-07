@@ -28,21 +28,26 @@ function insertBackupIfMissing({ equipment_id, file_name, file_path, file_size, 
   const existing = db
     .prepare('SELECT id, file_size, status, received_at FROM backups WHERE equipment_id = ? AND file_path = ?')
     .get(equipment_id, file_path);
+
+  const rt = getRuntimeConfig();
+  const lowerName = file_name.toLowerCase();
+  const isValidExtension = rt.BACKUP_EXTENSIONS.some((ext) => lowerName.endsWith(ext.toLowerCase()));
+  const status = (file_size === 0 || !isValidExtension) ? 'invalid' : 'valid';
+
   if (existing) {
     // If a file was still uploading (0 B) or changed, refresh its metadata.
-    if ((existing.file_size ?? 0) !== file_size) {
-      const status = file_size === 0 ? 'invalid' : 'valid';
+    if ((existing.file_size ?? 0) !== file_size || existing.status !== status) {
       db.prepare('UPDATE backups SET file_size = ?, status = ?, received_at = ? WHERE id = ?').run(
         file_size,
         status,
         received_at,
         existing.id
       );
+      return { inserted: true, id: existing.id, updated: true };
     }
     return { inserted: false, id: existing.id };
   }
 
-  const status = file_size === 0 ? 'invalid' : 'valid';
   const info = db
     .prepare(
       'INSERT INTO backups (equipment_id, file_name, file_path, file_size, checksum, status, received_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
